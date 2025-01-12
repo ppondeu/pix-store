@@ -1,4 +1,4 @@
-package dev.ppondeu.java_starter.dtos;
+package dev.ppondeu.java_starter.users.dtos;
 
 import java.util.UUID;
 

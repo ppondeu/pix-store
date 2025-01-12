@@ -1,6 +1,6 @@
-package dev.ppondeu.java_starter.interfaces;
+package dev.ppondeu.java_starter.users.interfaces;
 
-import dev.ppondeu.java_starter.entities.User;
+import dev.ppondeu.java_starter.users.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

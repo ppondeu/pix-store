@@ -1,6 +1,6 @@
-package dev.ppondeu.java_starter.entities;
+package dev.ppondeu.java_starter.users.entities;
 
-import dev.ppondeu.java_starter.dtos.UserCreateDTO;
+import dev.ppondeu.java_starter.users.dtos.UserCreateDTO;
 import jakarta.persistence.*;
 
 import java.io.Serializable;

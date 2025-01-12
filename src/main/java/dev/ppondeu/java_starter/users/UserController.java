@@ -1,11 +1,10 @@
-package dev.ppondeu.java_starter.controllers;
+package dev.ppondeu.java_starter.users;
 
-import dev.ppondeu.java_starter.dtos.UserCreateDTO;
-import dev.ppondeu.java_starter.dtos.UserResponse;
-import dev.ppondeu.java_starter.dtos.UserUpdateDTO;
-import dev.ppondeu.java_starter.interfaces.IUserService;
-import dev.ppondeu.java_starter.mappers.UserMapper;
-import org.apache.coyote.Response;
+import dev.ppondeu.java_starter.users.dtos.UserCreateDTO;
+import dev.ppondeu.java_starter.users.dtos.UserResponse;
+import dev.ppondeu.java_starter.users.dtos.UserUpdateDTO;
+import dev.ppondeu.java_starter.users.interfaces.IUserService;
+import dev.ppondeu.java_starter.users.mappers.UserMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

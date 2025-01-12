@@ -1,8 +1,9 @@
-package dev.ppondeu.java_starter.mappers;
+package dev.ppondeu.java_starter.users.mappers;
 
-import dev.ppondeu.java_starter.dtos.UserCreateDTO;
-import dev.ppondeu.java_starter.dtos.UserResponse;
-import dev.ppondeu.java_starter.entities.User;
+
+import dev.ppondeu.java_starter.users.dtos.UserCreateDTO;
+import dev.ppondeu.java_starter.users.dtos.UserResponse;
+import dev.ppondeu.java_starter.users.entities.User;
 
 public class UserMapper {
     public static UserResponse mapToUserResponse(User user) {

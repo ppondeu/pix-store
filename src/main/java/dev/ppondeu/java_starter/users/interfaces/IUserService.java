@@ -1,8 +1,8 @@
-package dev.ppondeu.java_starter.interfaces;
+package dev.ppondeu.java_starter.users.interfaces;
 
-import dev.ppondeu.java_starter.dtos.UserCreateDTO;
-import dev.ppondeu.java_starter.dtos.UserUpdateDTO;
-import dev.ppondeu.java_starter.entities.User;
+import dev.ppondeu.java_starter.users.dtos.UserCreateDTO;
+import dev.ppondeu.java_starter.users.dtos.UserUpdateDTO;
+import dev.ppondeu.java_starter.users.entities.User;
 
 import java.util.List;
 import java.util.UUID;

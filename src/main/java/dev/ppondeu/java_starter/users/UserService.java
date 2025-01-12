@@ -1,12 +1,12 @@
-package dev.ppondeu.java_starter.services;
+package dev.ppondeu.java_starter.users;
 
 import dev.ppondeu.java_starter.common.exceptions.BadRequestException;
 import dev.ppondeu.java_starter.common.exceptions.NotFoundException;
-import dev.ppondeu.java_starter.dtos.UserCreateDTO;
-import dev.ppondeu.java_starter.dtos.UserUpdateDTO;
-import dev.ppondeu.java_starter.entities.User;
-import dev.ppondeu.java_starter.interfaces.IUserRepository;
-import dev.ppondeu.java_starter.interfaces.IUserService;
+import dev.ppondeu.java_starter.users.dtos.UserCreateDTO;
+import dev.ppondeu.java_starter.users.dtos.UserUpdateDTO;
+import dev.ppondeu.java_starter.users.entities.User;
+import dev.ppondeu.java_starter.users.interfaces.IUserRepository;
+import dev.ppondeu.java_starter.users.interfaces.IUserService;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class UserService implements IUserService {
     @Override
     public User createUser(UserCreateDTO userCreateDTO) {
         CompletableFuture<Boolean> usernameExistsFuture = CompletableFuture.supplyAsync(() ->
-            this.userRepository.findByUsername(userCreateDTO.getUsername()).isPresent()
+                this.userRepository.findByUsername(userCreateDTO.getUsername()).isPresent()
         );
 
         CompletableFuture<Boolean> emailExistsFuture = CompletableFuture.supplyAsync(() ->
