@@ -9,6 +9,7 @@ import dev.ppondeu.java_starter.users.interfaces.IUserRepository;
 import dev.ppondeu.java_starter.users.interfaces.IUserService;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,9 +23,9 @@ public class UserService implements IUserService {
         this.userRepository = userRepository;
     }
 
-    @Caching(
-            evict = {@CacheEvict(value = "users", allEntries = true)}
-    )
+//    @Caching(
+//            evict = {@CacheEvict(value = "users", allEntries = true)}
+//    )
     @Override
     public User createUser(UserCreateDTO userCreateDTO) {
         CompletableFuture<Boolean> usernameExistsFuture = CompletableFuture.supplyAsync(() ->
@@ -49,19 +50,30 @@ public class UserService implements IUserService {
         return this.userRepository.save(userObj);
     }
 
-    @Cacheable(value = "users", key = "#id", unless = "#result == null")
+//    @Cacheable(value = "users", key = "#id", unless = "#result == null")
     @Override
     public User getUserById(UUID id) {
         return this.userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("user with id: " + id + " not found"));
     }
 
-    @Cacheable(value = "users", unless = "#result.isEmpty()")
+    public User getUserByUsername(String username) {
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("user with username: " + username + " not found"));
+    }
+
+    public User getUserByEmail(String email) {
+        return this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("user with email: " + email + " not found"));
+    }
+
+    @Transactional
+//    @Cacheable(value = "users", unless = "#result.isEmpty()")
     public List<User> getUsers() {
         return this.userRepository.findAll();
     }
 
-    @CachePut(value = "users", key="#id")
+//    @CachePut(value = "users", key="#id")
     @Override
     public User updateUser(UUID id, UserUpdateDTO userUpdateDTO) {
         var user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("user with id: " + id + " not found"));
@@ -97,7 +109,7 @@ public class UserService implements IUserService {
         return this.userRepository.save(user);
     }
 
-    @CacheEvict(value = "users", key = "#id")
+//    @CacheEvict(value = "users", key = "#id")
     @Override
     public void deleteUser(UUID id) {
         if (!this.userRepository.existsById(id)) {
@@ -107,4 +119,11 @@ public class UserService implements IUserService {
         this.userRepository.deleteById(id);
     }
 
+    @Override
+    public void updateRefreshToken(UUID id, String refreshToken) {
+        int rowsUpdated = this.userRepository.updateRefreshToken(id, refreshToken);
+        if (rowsUpdated <= 0) {
+            throw new BadRequestException("updateRefreshToken failed");
+        }
+    }
 }

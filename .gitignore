@@ -33,3 +33,6 @@ build/
 .vscode/
 
 /redis/*
+
+/src/main/resources/application.properties
+/src/main/resources/uploads/

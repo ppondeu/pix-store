@@ -1,9 +1,14 @@
 package dev.ppondeu.java_starter.users.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.ppondeu.java_starter.pictures.entities.Picture;
+import dev.ppondeu.java_starter.pictures.entities.PicturePermission;
 import dev.ppondeu.java_starter.users.dtos.UserCreateDTO;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +35,13 @@ public class User implements Serializable {
 
     @Column(name = "refresh_token", nullable = true)
     private String refreshToken;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Picture> pictures;
+
+    @OneToMany(mappedBy = "user")
+    private Set<PicturePermission> permissions;
 
     public User() {
     }
@@ -93,6 +105,10 @@ public class User implements Serializable {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public List<Picture> getPictures() {
+        return pictures;
     }
 
     @Override

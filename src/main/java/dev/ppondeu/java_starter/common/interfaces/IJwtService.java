@@ -1,4 +1,8 @@
 package dev.ppondeu.java_starter.common.interfaces;
 
-public class IJwtService {
+import io.jsonwebtoken.Claims;
+
+public interface IJwtService {
+    public String GenerateToken(Claims claims, boolean isAccess);
+    public Claims ValidateToken(String token, boolean isAccess);
 }

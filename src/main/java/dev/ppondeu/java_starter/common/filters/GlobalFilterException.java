@@ -2,16 +2,19 @@ package dev.ppondeu.java_starter.common.filters;
 
 import dev.ppondeu.java_starter.common.dtos.APIResponse;
 import dev.ppondeu.java_starter.common.exceptions.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -150,16 +153,51 @@ public class GlobalFilterException {
         return new ResponseEntity<>(apiResponse, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<APIResponse<?>> handleNoHandlerFoundException(NoHandlerFoundException ex) {
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<APIResponse<?>> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException ex) {
+
+        APIResponse<?> apiResponse = new APIResponse<>(
+                HttpStatus.BAD_REQUEST.value(),
+                "Http Media Type Not Supported",
+                Collections.singletonList(ex.getMessage()),
+                null
+        );
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<APIResponse<?>> handleExpiredJwtException(Exception ex) {
+        APIResponse<?> apiResponse = new APIResponse<>(
+                HttpStatus.UNAUTHORIZED.value(),
+                "Unauthorized",
+                Collections.singletonList(ex.getMessage()),
+                null
+        );
+        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<APIResponse<?>> handleNoResourceFoundExceptionException(NoResourceFoundException ex) {
 
         APIResponse<?> apiResponse = new APIResponse<>(
                 HttpStatus.NOT_FOUND.value(),
-                "No Handler Found",
+                "No Resource Found",
                 Collections.singletonList(ex.getMessage()),
                 null
         );
         return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<APIResponse<?>> handleMissingServletRequestPartException(MissingServletRequestPartException ex) {
+
+        APIResponse<?> apiResponse = new APIResponse<>(
+                HttpStatus.BAD_REQUEST.value(),
+                "Missing Servlet Request Part",
+                Collections.singletonList(ex.getMessage()),
+                null
+        );
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
@@ -173,5 +211,7 @@ public class GlobalFilterException {
         );
         return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 
 }
