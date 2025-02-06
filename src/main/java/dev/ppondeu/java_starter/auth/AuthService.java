@@ -5,6 +5,7 @@ import dev.ppondeu.java_starter.auth.dtos.LoginDTO;
 import dev.ppondeu.java_starter.auth.dtos.TokenResponse;
 import dev.ppondeu.java_starter.auth.interfaces.IAuthService;
 import dev.ppondeu.java_starter.common.exceptions.BadRequestException;
+import dev.ppondeu.java_starter.common.exceptions.UnauthorizedException;
 import dev.ppondeu.java_starter.common.interfaces.IJwtService;
 import dev.ppondeu.java_starter.users.dtos.UserCreateDTO;
 import dev.ppondeu.java_starter.users.dtos.UserResponse;
@@ -61,7 +62,8 @@ public class AuthService implements IAuthService {
                 .build();
         String accessToken = jwtService.GenerateToken(claims, true);
         String refreshToken = jwtService.GenerateToken(claims, false);
-//            save refresh token to db
+
+        //            save refresh token to db
         userService.updateRefreshToken(user.getId(), refreshToken);
         TokenResponse tokenResponse = new TokenResponse(accessToken, refreshToken);
         UserResponse userResponse = UserMapper.mapToUserResponse(user);
@@ -81,18 +83,16 @@ public class AuthService implements IAuthService {
     @Override
     public AuthResponse refreshToken(UUID userId, String refreshToken) {
         var userExist = userService.getUserById(userId);
-        System.out.println("User" + userExist);
-        System.out.println("Refresh Token" + refreshToken);
-        System.out.println("User Refresh Token" + userExist.getRefreshToken());
         if (Objects.isNull(userExist) || !userExist.getRefreshToken().equals(refreshToken)) {
-            throw new BadRequestException("Invalid Refresh Token");
+            throw new UnauthorizedException("Unauthorized");
         }
         Claims claims = Jwts.claims()
                 .subject(userExist.getId().toString())
                 .build();
         String accessToken = jwtService.GenerateToken(claims, true);
         String newRefreshToken = jwtService.GenerateToken(claims, false);
-//            save refresh token to db
+
+        //            save refresh token to db
         userService.updateRefreshToken(userExist.getId(), newRefreshToken);
         TokenResponse tokenResponse = new TokenResponse(accessToken, newRefreshToken);
         UserResponse userResponse = UserMapper.mapToUserResponse(userExist);
