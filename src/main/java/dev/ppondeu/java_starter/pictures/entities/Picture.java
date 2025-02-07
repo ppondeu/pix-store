@@ -1,11 +1,13 @@
 package dev.ppondeu.java_starter.pictures.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.ppondeu.java_starter.pictures.dtos.PictureCreateDTO;
 import dev.ppondeu.java_starter.users.entities.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,7 +39,8 @@ public class Picture {
     private LocalDateTime deleted_at;
 
     @OneToMany(mappedBy = "picture")
-    private Set<PicturePermission> permissions;
+    @JsonManagedReference
+    private List<PicturePermission> permissions;
 
     public Picture() {
     }
@@ -99,4 +102,7 @@ public class Picture {
         this.deleted_at = deleted_at;
     }
 
+    public List<PicturePermission> getPermissions() {
+        return permissions;
+    }
 }

@@ -1,5 +1,7 @@
 package dev.ppondeu.java_starter.common.services;
 
+import dev.ppondeu.java_starter.common.exceptions.BadRequestException;
+import dev.ppondeu.java_starter.common.exceptions.NotFoundException;
 import dev.ppondeu.java_starter.common.interfaces.IFileStorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -56,11 +58,6 @@ public class FileStorageService implements IFileStorageService {
                     .toAbsolutePath();
             System.out.println("Storing file: " + destinationFile);
             System.out.println("Original extension: " + this.uploadDirPath);
-//            if (!destinationFile.getParent().equals(this.uploadDirPath)) {
-//                throw new RuntimeException("Destination path does not match stored path");
-//            }
-
-//            Files.createDirectories(destinationFile.getParent());
 
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
@@ -69,8 +66,7 @@ public class FileStorageService implements IFileStorageService {
             return fileName;
 
         } catch (IOException e) {
-            // Handle errors and provide a detailed error message
-            throw new RuntimeException("Failed to store file: " + file.getOriginalFilename(), e);
+            throw new BadRequestException("Failed to store file: " + file.getOriginalFilename());
         }
     }
 
@@ -82,7 +78,7 @@ public class FileStorageService implements IFileStorageService {
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                throw new RuntimeException("File not found: " + fileName);
+                throw new NotFoundException("File not found: " + fileName);
             }
         } catch (MalformedURLException ex) {
             throw new RuntimeException(ex);

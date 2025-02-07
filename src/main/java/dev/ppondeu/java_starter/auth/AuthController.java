@@ -61,7 +61,7 @@ public class AuthController {
 
 
         APIResponse<AuthResponse> apiResponse = new APIResponse<>(
-                HttpStatus.OK.value(),
+                HttpStatus.CREATED.value(),
                 "Register successfully.",
                 Collections.emptyList(),
                 result

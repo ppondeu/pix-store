@@ -83,6 +83,9 @@ public class UserController {
         System.out.println(userUpdateDTO);
         var user = (User) Request.getAttribute("user");
         System.out.println(user);
+        if (user == null) {
+            throw new UnauthorizedException("Unauthorized");
+        }
         var userUpdated = this.userService.updateUser(user.getId(), userUpdateDTO);
         var apiResponse = new APIResponse<UserResponse>(
                 HttpStatus.OK.value(),

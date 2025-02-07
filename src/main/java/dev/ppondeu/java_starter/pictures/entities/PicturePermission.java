@@ -1,5 +1,6 @@
 package dev.ppondeu.java_starter.pictures.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.ppondeu.java_starter.users.entities.User;
 import jakarta.persistence.*;
 
@@ -18,6 +19,7 @@ public class PicturePermission {
 
     @ManyToOne
     @JoinColumn(name = "picture_id")
+    @JsonBackReference
     private Picture picture;
 
     @Enumerated(EnumType.STRING)
