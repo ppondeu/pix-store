@@ -1,5 +1,5 @@
 package dev.ppondeu.java_starter.pictures.entities;
 
 public enum PicturePermissionType {
-    VIEW, MODIFY, DELETE
+    VIEW_ONLY, CAN_EDIT, ALL
 }

@@ -37,12 +37,4 @@ public class AttachmentController {
                 .header("Content-Disposition", "inline; filename=\"" + fileName + "\"")
                 .body(fileServed);
     }
-
-    @GetMapping(path = "/downloads/{file-name}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("file-name") String fileName) {
-        var fileServed = this.fileStorageService.loadAsResource(fileName);
-        return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename=\"" + fileName + "\"")
-                .body(fileServed);
-    }
 }

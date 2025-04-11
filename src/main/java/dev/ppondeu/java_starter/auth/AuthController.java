@@ -78,12 +78,11 @@ public class AuthController {
         }
 
         var refreshToken = cookieService.getCookie(Request, "refresh_token");
-        System.out.println("refresh token" + refreshToken);
+        System.out.println("refresh token from cookie " + refreshToken);
         if (refreshToken == null) {
             throw new UnauthorizedException("Unauthorized");
         }
 
-        System.out.println("refresh token" + refreshToken);
         System.out.println("user id" + user.getId());
 
         var result = authService.refreshToken(user.getId(), refreshToken);

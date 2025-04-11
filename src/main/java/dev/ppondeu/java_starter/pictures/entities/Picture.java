@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.ppondeu.java_starter.pictures.dtos.PictureCreateDTO;
 import dev.ppondeu.java_starter.users.entities.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -31,14 +32,14 @@ public class Picture {
     @Column(name="created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at", nullable = false)
-    private LocalDateTime updated_at;
+    @Column(name="updatedAt", nullable = false)
+    private LocalDateTime updatedAt;
 
-    @Column(name="deleted_at")
+    @Column(name="deletedAt")
     @ColumnDefault("null")
-    private LocalDateTime deleted_at;
+    private LocalDateTime deletedAt;
 
-    @OneToMany(mappedBy = "picture")
+    @OneToMany(mappedBy = "picture", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<PicturePermission> permissions;
 
@@ -58,12 +59,12 @@ public class Picture {
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     public void onUpdate() {
-        this.updated_at = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public UUID getId() {
@@ -82,27 +83,40 @@ public class Picture {
         return createdAt;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getupdatedAt() {
+        return updatedAt;
     }
 
-    public LocalDateTime getDeleted_at() {
-        return deleted_at;
+    public LocalDateTime getdeletedAt() {
+        return deletedAt;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(@NotBlank(message = "Picture Name is required") @Length(min = 1, max = 128, message = "Picture Name length must be between 1 and 128") String name) {
+        this.name = name.strip();
     }
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
-    public void setDeleted_at(LocalDateTime deleted_at) {
-        this.deleted_at = deleted_at;
+    public void setdeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public List<PicturePermission> getPermissions() {
         return permissions;
+    }
+
+    @Override
+    public String toString() {
+        return "Picture{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", user=" + user.getId() +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
+                '}';
     }
 }

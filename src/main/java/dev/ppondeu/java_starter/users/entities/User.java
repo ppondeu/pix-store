@@ -36,11 +36,11 @@ public class User implements Serializable {
     @Column(name = "refresh_token", nullable = true)
     private String refreshToken;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Picture> pictures;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<PicturePermission> permissions;
 
     public User() {
